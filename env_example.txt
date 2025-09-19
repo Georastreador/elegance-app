@@ -1,0 +1,18 @@
+# Configurações de ambiente para Elegance APP
+# Copie este arquivo para .env e preencha com suas chaves
+
+# API Keys
+OPENAI_API_KEY=your_openai_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
+
+# Configurações da aplicação
+FLASK_ENV=development
+FLASK_DEBUG=True
+PORT=5000
+
+# Configurações de segurança
+SECRET_KEY=your_secret_key_here
+
+# Configurações de upload
+MAX_CONTENT_LENGTH=16777216  # 16MB
+UPLOAD_FOLDER=uploads

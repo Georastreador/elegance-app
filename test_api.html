@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste da API OpenAI - Elegance APP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste das APIs de Visão</h1>
+        <p>Use esta página para testar se sua chave da API (OpenAI ou GROQ) está funcionando corretamente.</p>
+        
+        <div class="form-group">
+            <label for="apiProvider">Provedor de API:</label>
+            <select id="apiProvider">
+                <option value="openai">OpenAI (GPT-4o)</option>
+                <option value="groq">GROQ (Llama 3.2 11B Vision)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="apiKey">Chave da API:</label>
+            <input type="password" id="apiKey" placeholder="sk-... ou gsk_...">
+        </div>
+        
+        <div class="form-group">
+            <label for="testPrompt">Prompt de teste:</label>
+            <textarea id="testPrompt" rows="3">Analise esta imagem e identifique todos os itens de vestuário visíveis. Retorne APENAS um objeto JSON válido com a estrutura: {"summary": "descrição", "items": [{"name": "item", "category": "masculine|feminine|unisex", "description": "descrição"}]}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="imageUrl">URL da imagem (opcional):</label>
+            <input type="text" id="imageUrl" placeholder="https://exemplo.com/imagem.jpg">
+        </div>
+        
+        <button onclick="testApiKey()">🔑 Testar Chave da API</button>
+        <button onclick="testVisionApi()" id="visionBtn" disabled>👁️ Testar API Vision</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let apiKey = '';
+        let selectedProvider = 'openai';
+        
+        function showResult(message, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+        }
+        
+        async function testApiKey() {
+            apiKey = document.getElementById('apiKey').value.trim();
+            selectedProvider = document.getElementById('apiProvider').value;
+            
+            if (!apiKey) {
+                showResult('Por favor, insira sua chave da API.', 'error');
+                return;
+            }
+            
+            showResult(`Testando chave da API ${selectedProvider.toUpperCase()}...`, 'info');
+            
+            try {
+                let url;
+                if (selectedProvider === 'openai') {
+                    url = 'https://api.openai.com/v1/models';
+                } else if (selectedProvider === 'groq') {
+                    url = 'https://api.groq.com/openai/v1/models';
+                }
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const visionModels = data.data.filter(m => 
+                        m.id.includes('gpt-4') || 
+                        m.id.includes('vision') || 
+                        m.id.includes('llava') ||
+                        m.id.includes('llama-3.2')
+                    );
+                    
+                    showResult(`✅ Chave da API ${selectedProvider.toUpperCase()} válida!\n\nModelos disponíveis: ${data.data.length}\n\nModelos de visão disponíveis:\n${visionModels.map(m => `- ${m.id}`).join('\n')}`, 'success');
+                    document.getElementById('visionBtn').disabled = false;
+                } else {
+                    const errorData = await response.text();
+                    showResult(`❌ Erro na chave da API ${selectedProvider.toUpperCase()} (${response.status}):\n${errorData}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Erro de conexão:\n${error.message}`, 'error');
+            }
+        }
+        
+        async function testVisionApi() {
+            if (!apiKey) {
+                showResult('Por favor, teste a chave da API primeiro.', 'error');
+                return;
+            }
+            
+            const prompt = document.getElementById('testPrompt').value.trim();
+            const imageUrl = document.getElementById('imageUrl').value.trim();
+            
+            if (!prompt) {
+                showResult('Por favor, insira um prompt de teste.', 'error');
+                return;
+            }
+            
+            showResult(`Testando API Vision ${selectedProvider.toUpperCase()}...`, 'info');
+            
+            try {
+                const messages = [
+                    {
+                        role: 'user',
+                        content: [
+                            {
+                                type: 'text',
+                                text: prompt
+                            }
+                        ]
+                    }
+                ];
+                
+                // Se uma URL de imagem foi fornecida, adicionar à mensagem
+                if (imageUrl) {
+                    messages[0].content.push({
+                        type: 'image_url',
+                        image_url: {
+                            url: imageUrl,
+                            detail: 'low'
+                        }
+                    });
+                }
+                
+                let url, model;
+                if (selectedProvider === 'openai') {
+                    url = 'https://api.openai.com/v1/chat/completions';
+                    model = 'gpt-4o';
+                } else if (selectedProvider === 'groq') {
+                    url = 'https://api.groq.com/openai/v1/chat/completions';
+                    model = 'llama-3.2-11b-vision-preview';
+                }
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: messages,
+                        max_tokens: 500,
+                        temperature: 0.1
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = data.choices[0].message.content;
+                    showResult(`✅ API Vision ${selectedProvider.toUpperCase()} funcionando!\n\nModelo: ${model}\nResposta:\n${content}`, 'success');
+                } else {
+                    const errorData = await response.text();
+                    showResult(`❌ Erro na API Vision ${selectedProvider.toUpperCase()} (${response.status}):\n${errorData}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Erro de conexão:\n${error.message}`, 'error');
+            }
+        }
+        
+        // Carregar chave salva se existir
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedKey = localStorage.getItem('openai_api_key');
+            if (savedKey) {
+                document.getElementById('apiKey').value = savedKey;
+                apiKey = savedKey;
+            }
+        });
+    </script>
+</body>
+</html>

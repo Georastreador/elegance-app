@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisador de Vestuário - Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Analisador de Vestuário</h1>
+            <p>Aponte a câmera para roupas e descubra mais sobre elas</p>
+        </header>
+
+        <main>
+            <!-- Seção da câmera -->
+            <section class="camera-section">
+                <div class="camera-container">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+                <div class="camera-controls">
+                    <button id="startCamera" class="btn btn-primary">Iniciar Câmera</button>
+                    <button id="analyzeBtn" class="btn btn-analyze" disabled>Analisar Vestuário</button>
+                </div>
+                <div id="status" class="status-message"></div>
+            </section>
+
+            <!-- Seção de resultados -->
+            <section class="results-section">
+                <div class="detected-items">
+                    <h2>Itens Detectados</h2>
+                    <div id="itemsList" class="items-list">
+                        <p class="no-items">Nenhum item detectado ainda. Aponte a câmera para roupas e clique em "Analisar".</p>
+                    </div>
+                </div>
+
+                <!-- Área de descrição detalhada -->
+                <div class="item-description">
+                    <h2>Descrição Detalhada</h2>
+                    <div id="descriptionArea" class="description-content">
+                        <p class="no-description">Clique em um item da lista para ver sua descrição detalhada.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Controles de áudio -->
+            <section class="audio-controls">
+                <button id="playAudioBtn" class="btn btn-audio" disabled>🔊 Ouvir Descrição</button>
+                <div id="audioStatus" class="audio-status"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Demo de reconhecimento de vestuário usando OpenAI GPT-4o ou GROQ LLaVA</p>
+        </footer>
+    </div>
+
+    <!-- Modal de configuração da API -->
+    <div id="apiModal" class="modal">
+        <div class="modal-content">
+            <h3>Configuração da API</h3>
+            <p>Escolha o provedor de IA e insira sua chave da API:</p>
+            
+            <div class="api-selector">
+                <label>
+                    <input type="radio" name="apiProvider" value="openai" checked>
+                    <span>OpenAI (GPT-4o)</span>
+                </label>
+                <label>
+                    <input type="radio" name="apiProvider" value="groq">
+                    <span>GROQ (Llama 3.2 11B Vision)</span>
+                </label>
+            </div>
+            
+            <input type="password" id="apiKeyInput" placeholder="Insira sua chave da API" class="api-input">
+            <div class="modal-buttons">
+                <button id="saveApiKey" class="btn btn-primary">Salvar</button>
+                <button id="closeModal" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

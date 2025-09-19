@@ -1,0 +1,33 @@
+Criado em 19Set25
+
+1 - Ajustado para reconhecer peças de vestuário
+2 - Inserida a API do GROQ
+3 - Suporte completo para OpenAI GPT-4o e GROQ Llama 3.2 11B Vision
+4 - Seletor de API na interface
+5 - Página de teste para ambas as APIs
+6 - Correção do parsing JSON com blocos markdown
+7 - Validação automática de chaves de API
+8 - Ambiente virtual Python configurado
+9 - Atualizado modelo GROQ para llama-3.2-11b-vision-preview (llava-1.5-7b descontinuado)
+
+# IMPORTANTE: NUNCA commite chaves da API no GitHub!
+# As chaves devem ser inseridas individualmente por cada usuário na aplicação.
+
+# Para obter chaves:
+# OpenAI: https://platform.openai.com/api-keys
+# GROQ: https://console.groq.com/keys
+
+# Configurações da aplicação (exemplo)
+# FLASK_ENV=development
+# FLASK_DEBUG=True
+# PORT=5000
+
+# Configurações de segurança (exemplo)
+# SECRET_KEY=your_secret_key_here
+
+# Configurações de upload (exemplo)
+# MAX_CONTENT_LENGTH=16777216  # 16MB
+# UPLOAD_FOLDER=uploads
+
+# Prompt de teste:
+Analise esta imagem e identifique todos os itens de vestuário visíveis. Retorne APENAS um objeto JSON válido com a estrutura: {"summary": "descrição", "items": [{"name": "item", "category": "masculine|feminine|unisex", "description": "descrição"}]}

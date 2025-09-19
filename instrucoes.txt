@@ -1,0 +1,64 @@
+APLICAÇÃO DE ANÁLISE DE VESTUÁRIO - INSTRUÇÕES DE USO
+
+Esta aplicação web móvel usa o ChatGPT Vision para analisar itens de vestuário através da câmera do dispositivo.
+
+ARQUIVOS INCLUÍDOS:
+- index.html: Estrutura principal da aplicação
+- style.css: Estilos e design responsivo
+- script.js: Lógica JavaScript e integração com APIs
+- test_api.html: Página de teste para verificar a API OpenAI
+- requirements.txt: Dependências Python (para backend opcional)
+- README.md: Documentação completa do projeto
+
+COMO USAR:
+
+1. TESTE INICIAL (RECOMENDADO):
+   - Abra o arquivo test_api.html em um navegador
+   - Insira sua chave da API OpenAI
+   - Clique em "Testar Chave da API" para verificar se está funcionando
+   - Se a chave for válida, teste a API Vision
+
+2. USO PRINCIPAL:
+   - Abra o arquivo index.html em um navegador web moderno
+   - Na primeira execução, insira sua chave da API OpenAI quando solicitado
+   - Clique em "Iniciar Câmera" para ativar a câmera do dispositivo
+   - Aponte a câmera para roupas ou itens de vestuário
+   - Clique em "Analisar Vestuário" para processar a imagem
+   - Veja os itens detectados na lista à esquerda
+   - Clique em qualquer item para ver sua descrição detalhada
+   - Use o botão "Ouvir Descrição" para reproduzir a descrição em áudio
+
+REQUISITOS:
+- Navegador moderno com suporte a câmera (Chrome, Firefox, Safari, Edge)
+- Chave válida da API OpenAI com acesso ao modelo GPT-4o
+- Conexão com a internet
+- Permissão para acesso à câmera
+
+FUNCIONALIDADES:
+- Detecção automática de itens de vestuário
+- Classificação por gênero (masculino, feminino, unissex)
+- Descrições detalhadas incluindo estilo, ocasiões de uso e materiais
+- Síntese de voz para descrições em áudio
+- Interface responsiva para dispositivos móveis e desktop
+- Validação automática da chave da API
+- Tratamento de erros melhorado com mensagens específicas
+
+CORREÇÕES IMPLEMENTADAS:
+- Atualizado modelo de gpt-4-vision-preview para gpt-4o
+- Melhorado tratamento de erros com mensagens específicas
+- Adicionada validação da chave da API antes do uso
+- Implementado sistema de debug com logs detalhados
+- Criada página de teste para verificar configuração da API
+
+ERROS COMUNS E SOLUÇÕES:
+- Erro 401: Chave da API inválida ou expirada
+- Erro 429: Limite de requisições excedido (aguarde alguns minutos)
+- Erro 403: Conta não tem acesso ao modelo GPT-4o
+- Erro 400: Formato de imagem inválido ou muito grande
+
+OBSERVAÇÕES:
+- A aplicação funciona apenas com HTTPS ou localhost por questões de segurança da câmera
+- A chave da API é armazenada localmente no navegador
+- Use test_api.html para diagnosticar problemas com a API
+- A aplicação é uma demonstração e não deve ser usada em produção sem melhorias de segurança
+

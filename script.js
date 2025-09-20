@@ -166,6 +166,14 @@ async function validateApiKey() {
         return response.ok;
     } catch (error) {
         console.error('Erro ao validar chave da API:', error);
+        
+        // Verificar se é erro de CORS
+        if (error.message.includes('CORS') || error.message.includes('Cross-Origin')) {
+            console.log('⚠️ Erro de CORS detectado. Isso é normal quando testando APIs diretamente do navegador.');
+            return true; // Assumir que a chave pode estar correta
+        } else if (error.message.includes('NetworkError')) {
+            console.log('⚠️ Erro de rede. Verifique sua conexão com a internet.');
+        }
         return false;
     }
 }

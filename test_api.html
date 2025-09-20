@@ -81,7 +81,7 @@
             <label for="apiProvider">Provedor de API:</label>
             <select id="apiProvider">
                 <option value="openai">OpenAI (GPT-4o)</option>
-                <option value="groq">GROQ (Llama 3.2 90B Vision)</option>
+                <option value="groq">GROQ (Llama 3.3 70B Versatile)</option>
             </select>
         </div>
         
@@ -207,7 +207,7 @@
                     model = 'gpt-4o';
                 } else if (selectedProvider === 'groq') {
                     url = 'https://api.groq.com/openai/v1/chat/completions';
-                    model = 'llama-3.2-90b-vision-preview';
+                    model = 'llama-3.3-70b-versatile';
                 }
                 
                 const response = await fetch(url, {

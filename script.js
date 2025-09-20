@@ -290,7 +290,7 @@ Se não houver roupas visíveis, retorne uma lista vazia de items e uma summary 
             };
         } else if (selectedApi === 'groq') {
             url = 'https://api.groq.com/openai/v1/chat/completions';
-            model = 'llama-3.2-90b-vision-preview';
+            model = 'llama-3.3-70b-versatile';
             console.log('Modelo:', model);
             console.log('Tamanho da imagem:', imageData.length, 'caracteres');
             
